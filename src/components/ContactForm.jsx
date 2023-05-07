@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import css from "../css-modules/ContactForm.module.css";
 import { nanoid } from 'nanoid';
 
 export default class ContactForm extends Component {
@@ -21,7 +23,9 @@ export default class ContactForm extends Component {
       number: this.state.number,
     };
 
-    const existingContact = this.props.contacts.find(contact => contact.name === newName.name);
+    const existingContact = this.props.contacts.find(
+      contact => contact.name === newName.name
+    );
     if (existingContact) {
       alert(`${newName.name} is already in contacts!`);
       return;
@@ -37,14 +41,12 @@ export default class ContactForm extends Component {
 
   render() {
     const { button } = this.props;
-    const contactInputId = nanoid();
     return (
-      <div className='form__container'>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor={contactInputId}>
+      <div className="form__container">
+        <form className={css.submit__form} onSubmit={this.handleSubmit}>
+          <label>
             Name
             <input
-              id={contactInputId}
               type="text"
               name="name"
               value={this.state.name}
@@ -54,7 +56,7 @@ export default class ContactForm extends Component {
               required
             />
           </label>
-          <label htmlFor={contactInputId}>
+          <label>
             Number
             <input
               type="tel"
@@ -71,4 +73,16 @@ export default class ContactForm extends Component {
       </div>
     );
   }
+}
+
+
+ContactForm.propTypes = {
+  button: PropTypes.string,
+  onSubmit: PropTypes.func,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      number: PropTypes.string,
+    }))
 }
